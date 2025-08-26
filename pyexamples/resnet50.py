@@ -8,15 +8,16 @@ arch = [
     to_head('..'),
     to_cor(),
     to_begin(),
+    #importante: dopo che si fa una modifica per poter vedere se è andata a buon fine bisogna salvare!!
 
     # (opzionale) immagine di input
     # to_input('../examples/fcn8s/cats.jpg', width=6, height=6, name='img'),
 
     # conv1 7x7 s=2 + maxpool 3x3 s=2  (niente virgole nelle caption!)
     to_Conv('conv1', 64, 112, offset="(1,0,0)", to="(0,0,0)",
-            height=64, depth=64, width=2, caption='7x7 s=2'),
+        height=64, depth=64, width=2, caption='{${7\\times7}$, s=2}'),
     to_Pool('pool1', offset="(0,0,0)", to="(conv1-east)",
-            height=32, depth=32, width=1, caption='3x3 s=2'),
+        height=32, depth=32, width=1, caption='{${3\\times3}$, s=2}'),
 
     # ResNet-50: bottleneck (3, 4, 6, 3)
     *block_Res(num=3, name='conv2', botton='pool1',  top='conv2_3',
@@ -30,9 +31,10 @@ arch = [
 
     # GAP + FC
     to_Pool('avgpool', offset="(1,0,0)", to="(conv5_3-east)",
-            height=6, depth=6, width=1, caption='avgpool'),
+        height=6, depth=6, width=1, caption='{\\footnotesize avgpool}'),
     to_SoftMax('fc', 1000, offset="(1,0,0)", to="(avgpool-east)",
-               width=1, height=1, depth=1, caption='1000'),
+           width=1, height=1, depth=1, caption='{\\footnotesize 1000}'),
+
 
     to_end()
 ]
