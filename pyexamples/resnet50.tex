@@ -21,12 +21,10 @@
 \tikzstyle{connection}=[ultra thick,every node/.style={sloped,allow upside down},draw=\edgecolor,opacity=0.7]
 \tikzstyle{copyconnection}=[ultra thick,every node/.style={sloped,allow upside down},draw={rgb:blue,4;red,1;green,1;black,3},opacity=0.7]
 
-\node[canvas is zy plane at x=0] (img) at (-3,0,0) {\includegraphics[width=6cm,height=6cm]{../examples/fcn8s/cats.jpg}};
-
 \pic[shift={(1,0,0)}] at (0,0,0) 
     {Box={
         name=conv1,
-        caption=7×7, s=2,
+        caption=7x7 s=2,
         xlabel={{112, }},
         zlabel=64,
         fill=\ConvColor,
@@ -39,7 +37,7 @@
 \pic[shift={ (0,0,0) }] at (conv1-east) 
     {Box={
         name=pool1,
-        caption=3×3, s=2,
+        caption=3x3 s=2,
         fill=\PoolColor,
         opacity=0.5,
         height=32,

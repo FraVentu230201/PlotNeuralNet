@@ -9,27 +9,26 @@ arch = [
     to_cor(),
     to_begin(),
 
-    # immagine di input (opzionale)
-    to_input('../examples/fcn8s/cats.jpg', width=6, height=6, name='img'),
+    # (opzionale) immagine di input
+    # to_input('../examples/fcn8s/cats.jpg', width=6, height=6, name='img'),
 
-    # conv1 7x7 s=2 + maxpool 3x3 s=2
+    # conv1 7x7 s=2 + maxpool 3x3 s=2  (niente virgole nelle caption!)
     to_Conv('conv1', 64, 112, offset="(1,0,0)", to="(0,0,0)",
-            height=64, depth=64, width=2, caption='7×7, s=2'),
+            height=64, depth=64, width=2, caption='7x7 s=2'),
     to_Pool('pool1', offset="(0,0,0)", to="(conv1-east)",
-            height=32, depth=32, width=1, caption='3×3, s=2'),
+            height=32, depth=32, width=1, caption='3x3 s=2'),
 
-    # ResNet-50: blocchi bottleneck  (3, 4, 6, 3)
-    *block_Res(num=3, name='conv2', botton='pool1', top='conv2_3',
-            s_filer=56, n_filer=256, offset="(1,0,0)", size=(32,32,2)),
+    # ResNet-50: bottleneck (3, 4, 6, 3)
+    *block_Res(num=3, name='conv2', botton='pool1',  top='conv2_3',
+               s_filer=56, n_filer=256,  offset="(1,0,0)", size=(32,32,2)),
     *block_Res(num=4, name='conv3', botton='conv2_3', top='conv3_4',
-            s_filer=28, n_filer=512, offset="(1,0,0)", size=(28,28,2)),
+               s_filer=28, n_filer=512,  offset="(1,0,0)", size=(28,28,2)),
     *block_Res(num=6, name='conv4', botton='conv3_4', top='conv4_6',
-            s_filer=14, n_filer=1024, offset="(1,0,0)", size=(24,24,2)),
+               s_filer=14, n_filer=1024, offset="(1,0,0)", size=(24,24,2)),
     *block_Res(num=3, name='conv5', botton='conv4_6', top='conv5_3',
-            s_filer=7, n_filer=2048, offset="(1,0,0)", size=(16,16,2)),
+               s_filer=7,  n_filer=2048, offset="(1,0,0)", size=(16,16,2)),
 
-
-    # GAP + FC (1000 classi)
+    # GAP + FC
     to_Pool('avgpool', offset="(1,0,0)", to="(conv5_3-east)",
             height=6, depth=6, width=1, caption='avgpool'),
     to_SoftMax('fc', 1000, offset="(1,0,0)", to="(avgpool-east)",
