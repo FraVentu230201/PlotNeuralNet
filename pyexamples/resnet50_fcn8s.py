@@ -2,7 +2,8 @@
 import os, sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from pycore.tikzeng import *
-
+#se si fanno delle modifiche e prima del run non si salva il file, viene fatto girare il file non aggiornato
+#è possibile stampare il pdf a sfondo trasparente, chiedere a chatGPT come fare
 arch = [
     # header + macro/colori standard
     to_head('..'),
