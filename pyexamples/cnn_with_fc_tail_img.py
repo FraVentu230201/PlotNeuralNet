@@ -13,6 +13,7 @@ def input_node(img_path, width_cm=8.0, height_cm=8.0, name="img", x=-3.0, y=0.0,
         rf'{{\detokenize{{{rel}}}}}}};'
     )
 
+
 def build_arch(img_node, fc_dims, add_flatten):
     arch = [
         to_head('..'),
@@ -50,35 +51,57 @@ def build_arch(img_node, fc_dims, add_flatten):
         r'\draw [connection] (p4-east) -- node {\midarrow} (cr5-west);',
     ]
 
-    prev = 'p5'
+
+    prev_anchor = 'p5'
     shift = 1.5
     fc_nodes = []
     fc_index = 1
+    prev_neurons = []
+    neuron_count = 5
+    y_spacing = 4
 
     if add_flatten:
         fc_nodes.append(
-            rf'\pic[shift={{({shift},0,0)}}] at ({prev}-east) '
+            rf'\pic[shift={{({shift},0,0)}}] at ({prev_anchor}-east) '
             r'{Box={name=flatten,caption=flatten,fill=\FcColor,height=10,width=2,depth=10}};'
         )
-        conn.append(rf'\draw [connection] ({prev}-east) -- node {{\midarrow}} (flatten-west);')
-        prev = 'flatten'
+        conn.append(rf'\draw [connection] ({prev_anchor}-east) -- node {{\midarrow}} (flatten-west);')
+        prev_anchor = 'flatten'
 
     for dim in fc_dims:
-        if dim == 'K':
+        layer_name = 'softmax' if dim == 'K' else f'fc{fc_index}'
+        color = '\\SoftmaxColor' if dim == 'K' else '\\FcColor'
+        caption = 'softmax' if dim == 'K' else layer_name
+        label = 'K' if dim == 'K' else dim
+
+        new_neurons = []
+        for n in range(neuron_count):
+            y = (n - (neuron_count - 1) / 2) * y_spacing
+            node_name = f'{layer_name}-{n+1}'
+            cap = caption if n == neuron_count // 2 else ''
             fc_nodes.append(
-                rf'\pic[shift={{({shift},0,0)}}] at ({prev}-east) '
-                r'{Box={name=softmax,caption=softmax,fill=\SoftmaxColor,height=10,width=2,depth=10,zlabel=K}};'
+                rf'\pic[shift={{({shift},{y},0)}}] at ({prev_anchor}-east) '
+                rf'{{Ball={{name={node_name},caption={cap},fill={color},opacity=0.6,radius=2.5}}}};'
             )
-            conn.append(rf'\draw [connection] ({prev}-east) -- node {{\midarrow}} (softmax-west);')
-            prev = 'softmax'
-        else:
-            fc_name = f'fc{fc_index}'
-            fc_nodes.append(
-                rf'\pic[shift={{({shift},0,0)}}] at ({prev}-east) '
-                rf'{{Box={{name={fc_name},caption={fc_name},fill=\FcColor,height=10,width=2,depth=10,zlabel={dim}}}}};'
-            )
-            conn.append(rf'\draw [connection] ({prev}-east) -- node {{\midarrow}} ({fc_name}-west);')
-            prev = fc_name
+            if prev_neurons:
+                for p in prev_neurons:
+                    conn.append(
+                        rf'\draw [connection] ({p}-east) -- node {{\midarrow}} ({node_name}-west);'
+                    )
+            else:
+                conn.append(
+                    rf'\draw [connection] ({prev_anchor}-east) -- node {{\midarrow}} ({node_name}-west);'
+                )
+            new_neurons.append(node_name)
+
+        fc_nodes.append(
+            rf'\node[anchor=west] at ({layer_name}-{neuron_count//2 + 1}-east) {{{label}}};'
+        )
+
+        prev_neurons = new_neurons
+        prev_anchor = new_neurons[len(new_neurons)//2]
+        if dim != 'K':
+
             fc_index += 1
 
     arch.extend(fc_nodes)
@@ -103,12 +126,9 @@ def main():
     namefile = os.path.splitext(os.path.basename(__file__))[0]
     to_generate(arch, namefile + '.tex')
 
+
+
 if __name__ == "__main__":
     main()
 
-# come far girare il codice:
-#apri il terminale dedicato di visual studio code
-#scrivi bash e manda invio
-#scrivi cd pyexamples e manda invio
-#incolla python3 cnn_with_fc_tail_img.py --image "/percorso/con/spazi/mia immagine.jpg" --fc-dims 2048,512,K
-#se vuoi anche salvare il fil in formato jpg incolla magick -density 300 cnn_with_fc_tail_img.pdf -trim -quality 95 cnn_with_fc_tail_img.png
+
