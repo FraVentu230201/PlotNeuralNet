@@ -112,4 +112,3 @@ if __name__ == "__main__":
 #scrivi cd pyexamples e manda invio
 #incolla python3 cnn_with_fc_tail_img.py --image "/percorso/con/spazi/mia immagine.jpg" --fc-dims 2048,512,K
 #se vuoi anche salvare il fil in formato jpg incolla magick -density 300 cnn_with_fc_tail_img.pdf -trim -quality 95 cnn_with_fc_tail_img.png
-
