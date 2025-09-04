@@ -3,7 +3,6 @@ import os, sys, argparse
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from pycore.tikzeng import *
 
-
 def input_node(img_path, width_cm=8.0, height_cm=8.0, name="img", x=-3.0, y=0.0, z=0.0):
     """Crea il nodo TikZ con l'immagine di input, gestendo percorsi con spazi."""
     base = os.path.dirname(__file__)
@@ -51,6 +50,7 @@ def build_arch(img_node, fc_dims, add_flatten):
         r'\draw [connection] (p3-east) -- node {\midarrow} (cr4-west);',
         r'\draw [connection] (p4-east) -- node {\midarrow} (cr5-west);',
     ]
+
 
     prev_anchor = 'p5'
     shift = 1.5
@@ -101,6 +101,7 @@ def build_arch(img_node, fc_dims, add_flatten):
         prev_neurons = new_neurons
         prev_anchor = new_neurons[len(new_neurons)//2]
         if dim != 'K':
+
             fc_index += 1
 
     arch.extend(fc_nodes)
@@ -125,6 +126,7 @@ def main():
 
     namefile = os.path.splitext(os.path.basename(__file__))[0]
     to_generate(arch, namefile + '.tex')
+
 
 
 if __name__ == "__main__":
