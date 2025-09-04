@@ -3,6 +3,7 @@ import os, sys, argparse
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from pycore.tikzeng import *
 
+
 def input_node(img_path, width_cm=8.0, height_cm=8.0, name="img", x=-3.0, y=0.0, z=0.0):
     """Crea il nodo TikZ con l'immagine di input, gestendo percorsi con spazi."""
     base = os.path.dirname(__file__)
@@ -14,7 +15,9 @@ def input_node(img_path, width_cm=8.0, height_cm=8.0, name="img", x=-3.0, y=0.0,
     )
 
 
-def build_arch(img_node, fc_dims, add_flatten):
+
+def build_arch(img_node, fc_dims, add_flatten, fc_spacing):
+
     arch = [
         to_head('..'),
         to_cor(),
@@ -53,7 +56,8 @@ def build_arch(img_node, fc_dims, add_flatten):
 
 
     prev_anchor = 'p5'
-    shift = 1.5
+    shift = fc_spacing
+
     fc_nodes = []
     fc_index = 1
     prev_neurons = []
@@ -117,12 +121,17 @@ def main():
     ap.add_argument("--height", type=float, default=8.0, help="Altezza immagine (cm)")
     ap.add_argument("--x", type=float, default=-3.0, help="Posizione X dell'immagine")
     ap.add_argument("--fc-dims", default="4096,4096,K", help="Dimensioni dei layer FC separate da virgole; l'ultimo può essere K")
+
+    ap.add_argument("--fc-spacing", type=float, default=2.5, help="Distanza orizzontale tra i layer fully connected")
+
     ap.add_argument("--add-flatten", action="store_true", help="Inserisce un layer flatten prima dei FC")
     args = ap.parse_args()
 
     img = input_node(args.image, width_cm=args.width, height_cm=args.height, x=args.x)
     fc_dims = [d.strip() for d in args.fc_dims.split(',') if d.strip()]
-    arch = build_arch(img, fc_dims, args.add_flatten)
+
+    arch = build_arch(img, fc_dims, args.add_flatten, args.fc_spacing)
+
 
     namefile = os.path.splitext(os.path.basename(__file__))[0]
     to_generate(arch, namefile + '.tex')
