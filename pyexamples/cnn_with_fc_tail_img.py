@@ -109,6 +109,7 @@ def build_arch(img_node, fc_dims, add_flatten):
     arch.append(to_end())
     return arch
 
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--image", required=True, help="Path dell'immagine")
@@ -130,3 +131,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
