@@ -1,11 +1,19 @@
 # pyexamples/resnet50_fcn8s_img.py
 import os, sys, argparse
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from pathlib import Path
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+sys.path.append(str(SCRIPT_DIR.parent))
+
 from pycore.tikzeng import *
 
 def input_node(img_path, width_cm=8, height_cm=8, name='temp', x=-3, y=0, z=0):
-    base = os.path.dirname(__file__)
-    rel = os.path.relpath(img_path, start=base).replace('\\', '/')
+    resolved_path = Path(img_path).expanduser().resolve(strict=False)
+    try:
+        rel = os.path.relpath(str(resolved_path), start=str(SCRIPT_DIR))
+    except ValueError:
+        rel = str(resolved_path)
+    rel = rel.replace('\\', '/')
     return rf'\node[canvas is zy plane at x=0] ({name}) at ({x},{y},{z}) ' \
            rf'{{\includegraphics[width={width_cm}cm,height={height_cm}cm]{{\detokenize{{{rel}}}}}}};'
 
@@ -119,10 +127,11 @@ def main():
     img = input_node(args.image, width_cm=args.width, height_cm=args.height, x=args.x)
     arch = build_arch(img)
 
-    namefile = os.path.splitext(os.path.basename(__file__))[0]
-    output_path = os.path.join(os.path.dirname(__file__), namefile + '.tex')
+
+    output_path = SCRIPT_DIR / f"{Path(__file__).stem}.tex"
     print(f"Generating LaTeX diagram at: {output_path}")
-    to_generate(arch, output_path)
+    to_generate(arch, str(output_path))
+
 
 if __name__ == "__main__":
     main()
