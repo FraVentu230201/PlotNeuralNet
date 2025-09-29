@@ -117,9 +117,3 @@ def main():
 if __name__ == "__main__":
     main()
 
-#istruzioni per eseguire questo codice
-#apri il terminale deidcato di visual studio code
-#scrivi bash e manda invio
-#scrivi cd pyexamples e manda invio
-#scrivi python3 convoluational_neural_network_visualizzation.py --image '/Users/franc/Desktop/tesi Deix/documenti per scrittura tesi/codici python per generare slide tesi/usain_bolt_running.jpg' --width 8 --height 8 --x -3
-#manda invio
