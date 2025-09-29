@@ -13,14 +13,14 @@ def to_head( projectpath ):
 
 def to_cor():
     return r"""
-\def\ConvColor{rgb:yellow,5;red,2.5;white,5}
-\def\ConvReluColor{rgb:yellow,5;red,5;white,5}
-\def\PoolColor{rgb:red,1;black,0.3}
-\def\UnpoolColor{rgb:blue,2;green,1;black,0.3}
-\def\FcColor{rgb:blue,5;red,2.5;white,5}
-\def\FcReluColor{rgb:blue,5;red,5;white,4}
-\def\SoftmaxColor{rgb:magenta,5;black,7}   
-\def\SumColor{rgb:blue,5;green,15}
+\def\ConvColor{rgb:blue,5;green,2;white,2}
+\def\ConvReluColor{rgb:blue,5;green,3;white,1}
+\def\PoolColor{rgb:green,5;blue,2;white,2}
+\def\UnpoolColor{rgb:magenta,4;blue,2;white,2}
+\def\FcColor{rgb:red,4;yellow,3;white,2}
+\def\FcReluColor{rgb:red,4;yellow,4;white,1}
+\def\SoftmaxColor{rgb:magenta,5;blue,5;white,2}
+\def\SumColor{rgb:yellow,5;red,3;white,2}
 """
 
 def to_begin():

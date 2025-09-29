@@ -132,6 +132,5 @@ def main():
     print(f"Generating LaTeX diagram at: {output_path}")
     to_generate(arch, str(output_path))
 
-
 if __name__ == "__main__":
     main()
