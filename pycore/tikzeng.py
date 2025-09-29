@@ -13,6 +13,7 @@ def to_head( projectpath ):
 
 def to_cor():
     return r"""
+
 \definecolor{ConvColor}{HTML}{4CAF50}
 \definecolor{ConvReluColor}{HTML}{4CAF50}
 \definecolor{PoolColor}{HTML}{B0BEC5}
