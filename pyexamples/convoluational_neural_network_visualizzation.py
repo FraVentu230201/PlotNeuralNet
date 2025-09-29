@@ -17,11 +17,17 @@ def build_arch(img_node):
     return [
         to_head('..'),
         to_cor(),
-        r'\def\ConvColor{rgb:yellow,5;red,2.5;white,5}',
-        r'\def\ConvReluColor{rgb:yellow,5;red,5;white,5}',
-        r'\def\PoolColor{rgb:orange,5;red,3;white,3}',
-        r'\def\SoftmaxColor{rgb:purple,5;black,7}',
-        r'\def\SumColor{rgb:orange,5;red,4;white,3}',
+
+        r'\definecolor{ConvColor}{HTML}{D2691E}',
+        r'\definecolor{ConvReluColor}{HTML}{A84300}',
+        r'\definecolor{PoolColor}{HTML}{F6C89F}',
+        r'\definecolor{SoftmaxColor}{HTML}{8E6CE7}',
+        r'\definecolor{SumColor}{HTML}{FF8F00}',
+        r'\def\ConvColor{ConvColor}',
+        r'\def\ConvReluColor{ConvReluColor}',
+        r'\def\PoolColor{PoolColor}',
+        r'\def\SoftmaxColor{SoftmaxColor}',
+        r'\def\SumColor{SumColor}',
         r'\def\DcnvColor{rgb:blue,5;green,2.5;white,5}',
         to_begin(),
 
