@@ -1,11 +1,19 @@
 # pyexamples/resnet50_fcn8s_img.py
 import os, sys, argparse
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from pathlib import Path
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+sys.path.append(str(SCRIPT_DIR.parent))
+
 from pycore.tikzeng import *
 
 def input_node(img_path, width_cm=8, height_cm=8, name='temp', x=-3, y=0, z=0):
-    base = os.path.dirname(__file__)
-    rel = os.path.relpath(img_path, start=base).replace('\\', '/')
+    resolved_path = Path(img_path).expanduser().resolve(strict=False)
+    try:
+        rel = os.path.relpath(str(resolved_path), start=str(SCRIPT_DIR))
+    except ValueError:
+        rel = str(resolved_path)
+    rel = rel.replace('\\', '/')
     return rf'\node[canvas is zy plane at x=0] ({name}) at ({x},{y},{z}) ' \
            rf'{{\includegraphics[width={width_cm}cm,height={height_cm}cm]{{\detokenize{{{rel}}}}}}};'
 
@@ -13,7 +21,6 @@ def build_arch(img_node):
     return [
         to_head('..'),
         to_cor(),
-        r'\def\DcnvColor{rgb:blue,5;green,2.5;white,5}',
         to_begin(),
 
         # immagine di input scelta da te
@@ -51,16 +58,16 @@ def build_arch(img_node):
 
         # fc -> conv e score32
         r'\pic[shift={(1,0,0)}] at (p5-east) {RightBandedBox={name=cr6_7,caption=fc to conv,'
-        r'xlabel={{"4096","4096"}},fill=\ConvColor,bandfill=\ConvReluColor,'
+        r'xlabel={{"4096","4096"}},fill=\PostConvColor,bandfill=\PostConvColor,'
         r'height=10,width={10,10},depth=10}};',
         r'\pic[shift={(1,0,0)}] at (cr6_7-east) {Box={name=score32,caption=fc8 to conv,'
-        r'xlabel={{"K","dummy"}},fill=\ConvColor,height=10,width=2,depth=10,zlabel=I/32}};',
+        r'xlabel={{"K","dummy"}},fill=\PostConvColor,height=10,width=2,depth=10,zlabel=I/32}};',
 
         # up 32->16 + skip da p4
         r'\pic[shift={(1.5,0,0)}] at (score32-east) {Box={name=d32,xlabel={{"K","dummy"}},'
         r'fill=\DcnvColor,height=15,width=2,depth=15,zlabel=I/16}};',
         r'\pic[shift={(0,-4,0)}] at (d32-west) {Box={name=score16,xlabel={{"K","dummy"}},'
-        r'fill=\ConvColor,height=15,width=2,depth=15,zlabel=I/16}};',
+        r'fill=\PostConvColor,height=15,width=2,depth=15,zlabel=I/16}};',
         r'\pic[shift={(1.5,0,0)}] at (d32-east) {Ball={name=elt1,fill=\SumColor,opacity=0.6,'
         r'radius=2.5,logo=$+$}};',
 
@@ -68,7 +75,7 @@ def build_arch(img_node):
         r'\pic[shift={(1.5,0,0)}] at (elt1-east) {Box={name=d16,xlabel={{"K","dummy"}},'
         r'fill=\DcnvColor,height=23,width=2,depth=23,zlabel=I/8}};',
         r'\pic[shift={(0,-6,0)}] at (d16-west) {Box={name=score8,xlabel={{"K","dummy"}},'
-        r'fill=\ConvColor,height=23,width=2,depth=23,zlabel=I/8}};',
+        r'fill=\PostConvColor,height=23,width=2,depth=23,zlabel=I/8}};',
         r'\pic[shift={(1.5,0,0)}] at (d16-east) {Ball={name=elt2,fill=\SumColor,opacity=0.6,'
         r'radius=2.5,logo=$+$}};',
 
@@ -114,8 +121,9 @@ def main():
     img = input_node(args.image, width_cm=args.width, height_cm=args.height, x=args.x)
     arch = build_arch(img)
 
-    namefile = os.path.splitext(os.path.basename(__file__))[0]
-    to_generate(arch, namefile + '.tex')
+    output_path = SCRIPT_DIR / f"{Path(__file__).stem}.tex"
+    print(f"Generating LaTeX diagram at: {output_path}")
+    to_generate(arch, str(output_path))
 
 if __name__ == "__main__":
     main()
