@@ -14,16 +14,27 @@ def to_head( projectpath ):
 def to_cor():
     return r"""
 
-\def\ConvColor{HTML}{4CAF50}
-\def\ConvReluColor{HTML}{4CAF50}
-\def\PoolColor{HTML}{B0BEC5}
-\def\UnpoolColor{HTML}{B39DDB}
-\def\FcColor{HTML}{1976D2}
-\def\FcReluColor{HTML}{1976D2}
-\def\DcnvColor{HTML}{1976D2}
-\def\SoftmaxColor{HTML}{1976D2}
-\def\SumColor{HTML}{FFB300}
-\def\PostConvColor{HTML}{1976D2}
+\definecolor{ConvColor}{HTML}{4CAF50}
+\definecolor{ConvReluColor}{HTML}{4CAF50}
+\definecolor{PoolColor}{HTML}{B0BEC5}
+\definecolor{UnpoolColor}{HTML}{B39DDB}
+\definecolor{FcColor}{HTML}{1976D2}
+\definecolor{FcReluColor}{HTML}{1976D2}
+\definecolor{DcnvColor}{HTML}{1976D2}
+\definecolor{SoftmaxColor}{HTML}{1976D2}
+\definecolor{SumColor}{HTML}{FFB300}
+\definecolor{PostConvColor}{HTML}{1976D2}
+
+\def\ConvColor{ConvColor}
+\def\ConvReluColor{ConvReluColor}
+\def\PoolColor{PoolColor}
+\def\UnpoolColor{UnpoolColor}
+\def\FcColor{FcColor}
+\def\FcReluColor{FcReluColor}
+\def\DcnvColor{DcnvColor}
+\def\SoftmaxColor{SoftmaxColor}
+\def\SumColor{SumColor}
+\def\PostConvColor{PostConvColor}
 
 """
 
