@@ -121,6 +121,7 @@ def main():
     img = input_node(args.image, width_cm=args.width, height_cm=args.height, x=args.x)
     arch = build_arch(img)
 
+
     output_path = SCRIPT_DIR / f"{Path(__file__).stem}.tex"
     print(f"Generating LaTeX diagram at: {output_path}")
     to_generate(arch, str(output_path))
