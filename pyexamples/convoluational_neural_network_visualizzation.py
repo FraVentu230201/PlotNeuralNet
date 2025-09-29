@@ -18,17 +18,12 @@ def build_arch(img_node):
         to_head('..'),
         to_cor(),
 
-        r'\definecolor{ConvColor}{HTML}{F7D9B4}',
-        r'\definecolor{ConvReluColor}{HTML}{CF5712}',
-        r'\definecolor{PoolColor}{HTML}{FFF1DC}',
-        r'\definecolor{SoftmaxColor}{HTML}{9E86E8}',
-        r'\definecolor{SumColor}{HTML}{E27C00}',
-        r'\def\ConvColor{ConvColor}',
-        r'\def\ConvReluColor{ConvReluColor}',
-        r'\def\PoolColor{PoolColor}',
-        r'\def\SoftmaxColor{SoftmaxColor}',
-        r'\def\SumColor{SumColor}',
+        r'\def\ConvColor{rgb:yellow,5;red,2.5;white,5}',
+        r'\def\ConvReluColor{rgb:yellow,5;red,5;white,5}',
+        r'\def\PoolColor{rgb:red,1;black,0.3}',
+
         r'\def\DcnvColor{rgb:blue,5;green,2.5;white,5}',
+        r'\def\SoftmaxColor{rgb:magenta,5;black,7}',
         to_begin(),
 
         # immagine di input scelta dall'utente
