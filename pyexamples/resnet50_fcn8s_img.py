@@ -21,12 +21,6 @@ def build_arch(img_node):
     return [
         to_head('..'),
         to_cor(),
-        r'\def\ConvColor{rgb:orange,5;red,3;white,5}',
-        r'\def\ConvReluColor{rgb:orange,5;red,5;white,5}',
-        r'\def\PoolColor{rgb:green,2;black,0.3}',
-        r'\def\SoftmaxColor{rgb:cyan,5;black,7}',
-        r'\def\SumColor{rgb:purple,5;green,10}',
-        r'\def\DcnvColor{rgb:blue,2;green,4;white,5}',   # puoi sostituire anche questo
         to_begin(),
 
         # immagine di input scelta da te
@@ -64,16 +58,16 @@ def build_arch(img_node):
 
         # fc -> conv e score32
         r'\pic[shift={(1,0,0)}] at (p5-east) {RightBandedBox={name=cr6_7,caption=fc to conv,'
-        r'xlabel={{"4096","4096"}},fill=\ConvColor,bandfill=\ConvReluColor,'
+        r'xlabel={{"4096","4096"}},fill=\PostConvColor,bandfill=\PostConvColor,'
         r'height=10,width={10,10},depth=10}};',
         r'\pic[shift={(1,0,0)}] at (cr6_7-east) {Box={name=score32,caption=fc8 to conv,'
-        r'xlabel={{"K","dummy"}},fill=\ConvColor,height=10,width=2,depth=10,zlabel=I/32}};',
+        r'xlabel={{"K","dummy"}},fill=\PostConvColor,height=10,width=2,depth=10,zlabel=I/32}};',
 
         # up 32->16 + skip da p4
         r'\pic[shift={(1.5,0,0)}] at (score32-east) {Box={name=d32,xlabel={{"K","dummy"}},'
         r'fill=\DcnvColor,height=15,width=2,depth=15,zlabel=I/16}};',
         r'\pic[shift={(0,-4,0)}] at (d32-west) {Box={name=score16,xlabel={{"K","dummy"}},'
-        r'fill=\ConvColor,height=15,width=2,depth=15,zlabel=I/16}};',
+        r'fill=\PostConvColor,height=15,width=2,depth=15,zlabel=I/16}};',
         r'\pic[shift={(1.5,0,0)}] at (d32-east) {Ball={name=elt1,fill=\SumColor,opacity=0.6,'
         r'radius=2.5,logo=$+$}};',
 
@@ -81,7 +75,7 @@ def build_arch(img_node):
         r'\pic[shift={(1.5,0,0)}] at (elt1-east) {Box={name=d16,xlabel={{"K","dummy"}},'
         r'fill=\DcnvColor,height=23,width=2,depth=23,zlabel=I/8}};',
         r'\pic[shift={(0,-6,0)}] at (d16-west) {Box={name=score8,xlabel={{"K","dummy"}},'
-        r'fill=\ConvColor,height=23,width=2,depth=23,zlabel=I/8}};',
+        r'fill=\PostConvColor,height=23,width=2,depth=23,zlabel=I/8}};',
         r'\pic[shift={(1.5,0,0)}] at (d16-east) {Ball={name=elt2,fill=\SumColor,opacity=0.6,'
         r'radius=2.5,logo=$+$}};',
 
