@@ -120,7 +120,9 @@ def main():
     arch = build_arch(img)
 
     namefile = os.path.splitext(os.path.basename(__file__))[0]
-    to_generate(arch, namefile + '.tex')
+    output_path = os.path.join(os.path.dirname(__file__), namefile + '.tex')
+    print(f"Generating LaTeX diagram at: {output_path}")
+    to_generate(arch, output_path)
 
 if __name__ == "__main__":
     main()
