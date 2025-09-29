@@ -17,6 +17,7 @@ def build_arch(img_node):
     return [
         to_head('..'),
         to_cor(),
+
         r'\definecolor{ConvColor}{HTML}{F7D9B4}',
         r'\definecolor{ConvReluColor}{HTML}{CF5712}',
         r'\definecolor{PoolColor}{HTML}{FFF1DC}',
