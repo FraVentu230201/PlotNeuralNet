@@ -14,20 +14,15 @@ def input_node(img_path, width_cm=8.0, height_cm=8.0, name='inp', x=-3.0, y=0.0,
            rf'{{\detokenize{{{rel}}}}}}};'
 
 def build_arch(img_node):
-    """
-    Costruisce l'architettura LaTeX della CNN (come nel tuo esempio),
-    con in più il nodo dell'immagine di input a sinistra.
-    """
     return [
         to_head('..'),
         to_cor(),
-        # Palette colori come nell'esempio fornito (immagine con il gattino)
-        r'\def\ConvColor{rgb:orange,5;red,3;white,5}',
+        r'\def\ConvColor{rgb:orange,5;red,2.5;white,5}',
         r'\def\ConvReluColor{rgb:orange,5;red,5;white,5}',
         r'\def\PoolColor{rgb:green,2;black,0.3}',
-        r'\def\SoftmaxColor{rgb:cyan,5;black,7}',
-        r'\def\SumColor{rgb:purple,5;green,10}',
-        r'\def\DcnvColor{rgb:blue,2;green,4;white,5}',
+        r'\def\SoftmaxColor{rgb:purple,5;black,7}',
+        r'\def\SumColor{rgb:green,5;black,7}',
+        r'\def\DcnvColor{rgb:blue,5;green,2.5;white,5}',
         to_begin(),
 
         # immagine di input scelta dall'utente
@@ -76,7 +71,7 @@ def build_arch(img_node):
         r'\pic[shift={(1,0,0)}] at (d32-east) {Box={name=softmax,caption=softmax,'
         r'xlabel={{"K","dummy"}},fill=\SoftmaxColor,height=40,width=2,depth=40,zlabel=I}};',
 
-        # connessioni
+        # connessioni + tratteggi identici…
         r'\draw [connection] (p1-east) -- node {\midarrow} (cr2-west);',
         r'\draw [connection] (p2-east) -- node {\midarrow} (cr3-west);',
         r'\draw [connection] (p3-east) -- node {\midarrow} (cr4-west);',
@@ -85,17 +80,15 @@ def build_arch(img_node):
         r'\draw [connection] (cr6_7-east) -- node {\midarrow} (c8-west);',
         r'\draw [connection] (c8-east) -- node {\midarrow} (d32-west);',
         r'\draw [connection] (d32-east) -- node {\midarrow} (softmax-west);',
-
-        # spigoli tratteggiati (proiezione)
         r'\draw[densely dashed]'
         r'(c8-nearnortheast) -- (d32-nearnorthwest)'
         r'(c8-nearsoutheast) -- (d32-nearsouthwest)'
         r'(c8-farsoutheast)  -- (d32-farsouthwest)'
         r'(c8-farnortheast)  -- (d32-farnorthwest)'
         r';',
-
         to_end(),
     ]
+
 
 def main():
     ap = argparse.ArgumentParser()
