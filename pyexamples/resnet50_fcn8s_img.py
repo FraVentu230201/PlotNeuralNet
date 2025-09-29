@@ -13,7 +13,12 @@ def build_arch(img_node):
     return [
         to_head('..'),
         to_cor(),
-        r'\def\DcnvColor{rgb:blue,5;green,2.5;white,5}',
+        r'\def\ConvColor{rgb:orange,5;red,3;white,5}',
+        r'\def\ConvReluColor{rgb:orange,5;red,5;white,5}',
+        r'\def\PoolColor{rgb:green,2;black,0.3}',
+        r'\def\SoftmaxColor{rgb:cyan,5;black,7}',
+        r'\def\SumColor{rgb:purple,5;green,10}',
+        r'\def\DcnvColor{rgb:blue,2;green,4;white,5}',   # puoi sostituire anche questo
         to_begin(),
 
         # immagine di input scelta da te
