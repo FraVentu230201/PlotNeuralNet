@@ -1,14 +1,24 @@
 # pyexamples/convoluational_neural_network_visualizzation.py
-import os, sys, argparse
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+import argparse
+import os
+import sys
+from pathlib import Path
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+sys.path.append(str(SCRIPT_DIR.parent))
+
 from pycore.tikzeng import *
 
 def input_node(img_path, width_cm=8.0, height_cm=8.0, name='inp', x=-3.0, y=0.0, z=0.0):
     """
     Crea il nodo TikZ con l'immagine di input, gestendo percorsi con spazi.
     """
-    base = os.path.dirname(__file__)
-    rel = os.path.relpath(img_path, start=base).replace('\\', '/')
+    resolved_path = Path(img_path).expanduser().resolve(strict=False)
+    try:
+        rel = os.path.relpath(str(resolved_path), start=str(SCRIPT_DIR))
+    except ValueError:
+        rel = str(resolved_path)
+    rel = rel.replace('\\', '/')
     return rf'\node[canvas is zy plane at x=0] ({name}) at ({x},{y},{z}) ' \
            rf'{{\includegraphics[width={width_cm}cm,height={height_cm}cm]' \
            rf'{{\detokenize{{{rel}}}}}}};'
@@ -105,8 +115,9 @@ def main():
                      x=args.x, y=args.y, z=args.z)
     arch = build_arch(img)
 
-    namefile = os.path.splitext(os.path.basename(__file__))[0]
-    to_generate(arch, namefile + '.tex')
+    output_path = SCRIPT_DIR / f"{Path(__file__).stem}.tex"
+    print(f"Generating LaTeX diagram at: {output_path}")
+    to_generate(arch, str(output_path))
 
 if __name__ == "__main__":
     main()
@@ -115,5 +126,5 @@ if __name__ == "__main__":
 #apri il terminale deidcato di visual studio code
 #scrivi bash e manda invio
 #scrivi cd pyexamples e manda invio
-#scrivi python3 convoluational_neural_network_visualizzation.py --image '/Users/franc/Desktop/tesi Deix/documenti per scrittura tesi/codici python per generare slide tesi/usain_bolt_running.jpg' --width 8 --height 8 --x -3
+#scrivi python3 convoluational_neural_network_visualizzation.py --image "/Users/franc/Desktop/nuove immagini da inserire dentro la tesi/20250928_1541_Construction Worker Stretching_simple_compose_01k688vgg5ew7vegskdr2xpxa2.png" --width 8 --height 8 --x -3
 #manda invio
