@@ -13,6 +13,7 @@ def to_head( projectpath ):
 
 def to_cor():
     return r"""
+
 \def\ConvColor{HTML}{4CAF50}
 \def\ConvReluColor{HTML}{4CAF50}
 \def\PoolColor{HTML}{B0BEC5}
@@ -23,6 +24,7 @@ def to_cor():
 \def\SoftmaxColor{HTML}{1976D2}
 \def\SumColor{HTML}{FFB300}
 \def\PostConvColor{HTML}{1976D2}
+
 """
 
 def to_begin():
