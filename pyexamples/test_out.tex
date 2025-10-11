@@ -1,0 +1,38 @@
+
+\documentclass[border=8pt, multi, tikz]{standalone} 
+\usepackage{import}
+\subimport{../layers/}{init}
+\usetikzlibrary{positioning}
+\usetikzlibrary{3d} %for including external image 
+
+
+\definecolor{ConvColor}{HTML}{4CAF50}
+\definecolor{ConvReluColor}{HTML}{4CAF50}
+\definecolor{PoolColor}{HTML}{B0BEC5}
+\definecolor{UnpoolColor}{HTML}{B39DDB}
+\definecolor{FcColor}{HTML}{1976D2}
+\definecolor{FcReluColor}{HTML}{1976D2}
+\definecolor{DcnvColor}{HTML}{1976D2}
+\definecolor{SoftmaxColor}{HTML}{1976D2}
+\definecolor{SumColor}{HTML}{FFB300}
+\definecolor{PostConvColor}{HTML}{1976D2}
+
+\def\ConvColor{ConvColor}
+\def\ConvReluColor{ConvReluColor}
+\def\PoolColor{PoolColor}
+\def\UnpoolColor{UnpoolColor}
+\def\FcColor{FcColor}
+\def\FcReluColor{FcReluColor}
+\def\DcnvColor{DcnvColor}
+\def\SoftmaxColor{SoftmaxColor}
+\def\SumColor{SumColor}
+\def\PostConvColor{PostConvColor}
+
+\def\ConvColor{rgb:yellow,5;red,2.5;white,5}\def\ConvReluColor{rgb:yellow,5;red,5;white,5}\def\PoolColor{rgb:red,1;black,0.3}\def\DcnvColor{rgb:blue,5;green,2.5;white,5}\def\SoftmaxColor{rgb:magenta,5;black,7}
+\newcommand{\copymidarrow}{\tikz \draw[-Stealth,line width=0.8mm,draw={rgb:blue,4;red,1;green,1;black,3}] (-0.3,0) -- ++(0.3,0);}
+
+\begin{document}
+\begin{tikzpicture}
+\tikzstyle{connection}=[ultra thick,every node/.style={sloped,allow upside down},draw=\edgecolor,opacity=0.7]
+\tikzstyle{copyconnection}=[ultra thick,every node/.style={sloped,allow upside down},draw={rgb:blue,4;red,1;green,1;black,3},opacity=0.7]
+\node[canvas is zy plane at x=0] (inp) at (-3.0,0.0,0.0) {\includegraphics[width=8.0cm,height=8.0cm]{\detokenize{../imgs/in.png}}};\pic[shift={(0,0,0)}] at (0,0,0) {RightBandedBox={name=cr1,caption=conv1,

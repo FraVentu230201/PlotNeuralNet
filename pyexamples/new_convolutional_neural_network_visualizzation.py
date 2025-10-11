@@ -16,8 +16,8 @@ def input_node(img_path, width_cm=8.0, height_cm=8.0, name='inp', x=-3.0, y=0.0,
 
 def build_arch(img_node):
     """
-    Mantiene struttura e colori dell'esempio originale, ma aumenta
-    sensibilmente il numero di layer convoluzionali in ciascun blocco.
+    Mantiene struttura e colori dell'esempio originale, ma riduce
+    il numero di bande in ciascun blocco convoluzionale.
     """
     return [
         to_head('..'),
@@ -35,42 +35,54 @@ def build_arch(img_node):
         # immagine di input (stessa logica dell'originale)
         img_node,
 
-        # conv1 (aumentato: 4 bande) + pool1
+        # conv1 (ridotto: 2 bande) + pool1
         r'\pic[shift={(0,0,0)}] at (0,0,0) {RightBandedBox={name=cr1,caption=conv1,',
-        r'xlabel={{"64","64","64","64"}},zlabel=I,fill=\ConvColor,bandfill=\ConvReluColor,',
-        r'height=40,width={2,2,2,2},depth=40}};',
+        r'xlabel={{"64","64"}},zlabel=I,fill=\ConvColor,bandfill=\ConvReluColor,',
+        r'height=40,width={2,2},depth=40}};',
         r'\pic[shift={(0,0,0)}] at (cr1-east) {Box={name=p1,fill=\PoolColor,opacity=0.5,height=35,width=1,depth=35}};',
 
-        # conv2 (aumentato: 5 bande) + pool2
+        # conv2 (ridotto: 3 bande) + pool2
         r'\pic[shift={(2,0,0)}] at (p1-east) {RightBandedBox={name=cr2,caption=conv2,',
-        r'xlabel={{"64","64","64","64","64"}},zlabel=I/2,fill=\ConvColor,bandfill=\ConvReluColor,',
-        r'height=35,width={3,3,3,3,3},depth=35}};',
+        r'xlabel={{"64","64","64"}},zlabel=I/2,fill=\ConvColor,bandfill=\ConvReluColor,',
+        r'height=35,width={3,3,3},depth=35}};',
         r'\pic[shift={(0,0,0)}] at (cr2-east) {Box={name=p2,fill=\PoolColor,opacity=0.5,height=30,width=1,depth=30}};',
 
-        # conv3 (aumentato: 6 bande) + pool3
+        # conv3 (ridotto: 4 bande) + pool3
         r'\pic[shift={(2,0,0)}] at (p2-east) {RightBandedBox={name=cr3,caption=conv3,',
-        r'xlabel={{"256","256","256","256","256","256"}},zlabel=I/4,fill=\ConvColor,bandfill=\ConvReluColor,',
-        r'height=30,width={4,4,4,4,4,4},depth=30}};',
+        r'xlabel={{"256","256","256","256"}},zlabel=I/4,fill=\ConvColor,bandfill=\ConvReluColor,',
+        r'height=30,width={4,4,4,4},depth=30}};',
         r'\pic[shift={(0,0,0)}] at (cr3-east) {Box={name=p3,fill=\PoolColor,opacity=0.5,height=23,width=1,depth=23}};',
 
-        # conv4 (aumentato: 7 bande) + pool4
+        # conv4 (ridotto: 5 bande) + pool4
         r'\pic[shift={(1.8,0,0)}] at (p3-east) {RightBandedBox={name=cr4,caption=conv4,',
-        r'xlabel={{"512","512","512","512","512","512","512"}},zlabel=I/8,fill=\ConvColor,bandfill=\ConvReluColor,',
-        r'height=23,width={7,7,7,7,7,7,7},depth=23}};',
+        r'xlabel={{"512","512","512","512","512"}},zlabel=I/8,fill=\ConvColor,bandfill=\ConvReluColor,',
+        r'height=23,width={7,7,7,7,7},depth=23}};',
         r'\pic[shift={(0,0,0)}] at (cr4-east) {Box={name=p4,fill=\PoolColor,opacity=0.5,height=15,width=1,depth=15}};',
 
-        # conv5 (aumentato: 8 bande) + pool5
+        # conv5 (ridotto: 6 bande) + pool5
         r'\pic[shift={(1.5,0,0)}] at (p4-east) {RightBandedBox={name=cr5,caption=conv5,',
-        r'xlabel={{"512","512","512","512","512","512","512","512"}},zlabel=I/16,fill=\ConvColor,bandfill=\ConvReluColor,',
-        r'height=15,width={7,7,7,7,7,7,7,7},depth=15}};',
+        r'xlabel={{"512","512","512","512","512","512"}},zlabel=I/16,fill=\ConvColor,bandfill=\ConvReluColor,',
+        r'height=15,width={7,7,7,7,7,7},depth=15}};',
         r'\pic[shift={(0,0,0)}] at (cr5-east) {Box={name=p5,fill=\PoolColor,opacity=0.5,height=10,width=1,depth=10}};',
 
+        # conv6 (ridotto: 6 bande) + pool6
+        r'\pic[shift={(1.2,0,0)}] at (p5-east) {RightBandedBox={name=cr6,caption=conv6,',
+        r'xlabel={{"512","512","512","512","512","512"}},zlabel=I/32,fill=\ConvColor,bandfill=\ConvReluColor,',
+        r'height=10,width={7,7,7,7,7,7},depth=10}};',
+        r'\pic[shift={(0,0,0)}] at (cr6-east) {Box={name=p6,fill=\PoolColor,opacity=0.5,height=7,width=1,depth=7}};',
+
+        # conv7 (ridotto: 6 bande) + pool7
+        r'\pic[shift={(1.0,0,0)}] at (p6-east) {RightBandedBox={name=cr7,caption=conv7,',
+        r'xlabel={{"512","512","512","512","512","512"}},zlabel=I/64,fill=\ConvColor,bandfill=\ConvReluColor,',
+        r'height=7,width={7,7,7,7,7,7},depth=7}};',
+        r'\pic[shift={(0,0,0)}] at (cr7-east) {Box={name=p7,fill=\PoolColor,opacity=0.5,height=5,width=1,depth=5}};',
+
         # fc -> conv (lasciato a 2, come struttura originale), fc8 -> conv
-        r'\pic[shift={(1,0,0)}] at (p5-east) {RightBandedBox={name=cr6_7,caption=fc to conv,',
+        r'\pic[shift={(1,0,0)}] at (p7-east) {RightBandedBox={name=cr8_9,caption=fc to conv,',
         r'xlabel={{"4096","4096"}},fill=\ConvColor,bandfill=\ConvReluColor,',
-        r'height=10,width={10,10},depth=10}};',
-        r'\pic[shift={(1,0,0)}] at (cr6_7-east) {Box={name=c8,caption=fc8 to conv,',
-        r'xlabel={{"K","dummy"}},fill=\ConvColor,height=10,width=2,depth=10,zlabel=I/32}};',
+        r'height=5,width={10,10},depth=5}};',
+        r'\pic[shift={(1,0,0)}] at (cr8_9-east) {Box={name=c8,caption=fc8 to conv,',
+        r'xlabel={{"K","dummy"}},fill=\ConvColor,height=5,width=2,depth=5,zlabel=I/128}};',
 
         # deconv finale + softmax (identici come struttura e colori)
         r'\pic[shift={(2.5,0,0)}] at (c8-east) {Box={name=d32,caption=Deconv,',
@@ -83,8 +95,10 @@ def build_arch(img_node):
         r'\draw [connection] (p2-east) -- node {\midarrow} (cr3-west);',
         r'\draw [connection] (p3-east) -- node {\midarrow} (cr4-west);',
         r'\draw [connection] (p4-east) -- node {\midarrow} (cr5-west);',
-        r'\draw [connection] (p5-east) -- node {\midarrow} (cr6_7-west);',
-        r'\draw [connection] (cr6_7-east) -- node {\midarrow} (c8-west);',
+        r'\draw [connection] (p5-east) -- node {\midarrow} (cr6-west);',
+        r'\draw [connection] (p6-east) -- node {\midarrow} (cr7-west);',
+        r'\draw [connection] (p7-east) -- node {\midarrow} (cr8_9-west);',
+        r'\draw [connection] (cr8_9-east) -- node {\midarrow} (c8-west);',
         r'\draw [connection] (c8-east) -- node {\midarrow} (d32-west);',
         r'\draw [connection] (d32-east) -- node {\midarrow} (softmax-west);',
         r'\draw[densely dashed]'
@@ -112,7 +126,16 @@ def main():
     arch = build_arch(img)
 
     namefile = os.path.splitext(os.path.basename(__file__))[0]
-    to_generate(arch, namefile + '.tex')
+    # Usa writer locale che normalizza le doppie backslash in singole
+    def _write_tex(lines, path):
+        with open(path, 'w') as f:
+            for c in lines:
+                # normalizza sequenze di backslash: riduci qualsiasi \\\\... a \ una sola volta
+                s = c
+                while '\\' in s:
+                    s = s.replace('\\\\', '\\')
+                f.write(s)
+    _write_tex(arch, namefile + '.tex')
 
 
 if __name__ == "__main__":
