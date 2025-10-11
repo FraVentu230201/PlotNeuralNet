@@ -126,16 +126,15 @@ def main():
     arch = build_arch(img)
 
     namefile = os.path.splitext(os.path.basename(__file__))[0]
-    # Usa writer locale che normalizza le doppie backslash in singole
+    # Usa writer locale che normalizza le backslash senza loop infinito
     def _write_tex(lines, path):
         with open(path, 'w') as f:
             for c in lines:
-                # normalizza sequenze di backslash: riduci qualsiasi \\\\... a \ una sola volta
-                s = c
-                while '\\' in s:
-                    s = s.replace('\\\\', '\\')
+                # normalizza: 4 backslash -> 2, poi 2 -> 1 (usa chr(92) per evitare problemi di quoting)
+                s = c.replace('\\\\', '\\').replace('\\', chr(92))
                 f.write(s)
     _write_tex(arch, namefile + '.tex')
+    print(f"Generato: {namefile}.tex")
 
 
 if __name__ == "__main__":
